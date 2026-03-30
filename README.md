@@ -57,9 +57,23 @@ To run the application locally on your machine, follow these steps:
 - **Styling**: Vanilla CSS (Custom Glassmorphism Design System)
 - **Icons**: Lucide React
 
-## 📸 Screenshots
+## 📸 Screenshots & Demo
 
-*(Add your screenshots here! Take screenshots of the Dashboard, Landing Page, and the VoIP calling interface to showcase the UI)*
+<div align="center">
+  <img src="./public/demo/crisis_sync_demo.webp" alt="CrisisSync Demo Walkthrough" width="800"/>
+</div>
+
+### Landing Page & Dashboard
+<p align="center">
+  <img src="./public/demo/landing_page_slideshow.png" width="48%" />
+  <img src="./public/demo/dashboard_live_requests.png" width="48%" />
+</p>
+
+### Volunteer Checklist & VoIP Calling
+<p align="center">
+  <img src="./public/demo/volunteer_safety_checklist.png" width="48%" />
+  <img src="./public/demo/voip_call_connected.png" width="48%" />
+</p> Elevate your hackathon submission.
 
 ## 🤝 Contributing
 

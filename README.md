@@ -57,11 +57,8 @@ To run the application locally on your machine, follow these steps:
 - **Styling**: Vanilla CSS (Custom Glassmorphism Design System)
 - **Icons**: Lucide React
 
-## 📸 Screenshots & Demo
+## 📸 Screenshots
 
-<div align="center">
-  <img src="./public/demo/crisis_sync_demo.gif" alt="CrisisSync Demo Walkthrough" width="800"/>
-</div>
 
 ### Landing Page & Dashboard
 <p align="center">

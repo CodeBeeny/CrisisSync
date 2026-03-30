@@ -1,16 +1,72 @@
-# React + Vite
+<div align="center">
+  <img src="./public/favicon.svg" alt="CrisisSync Logo" width="100"/>
+  <h1>CrisisSync</h1>
+  <p><strong>Decentralizing Emergency Response & Disaster Relief</strong></p>
+  
+  [![React](https://img.shields.io/badge/React-18.x-blue?style=for-the-badge&logo=react)](https://react.dev/)
+  [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+  [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🌍 Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+During a crisis, traditional emergency services are often overwhelmed. **CrisisSync** bridges the gap by providing a real-time, decentralized emergency relief network. Our platform instantly connects individuals who need help with verified local volunteers who can provide it—whether that's medical supplies, shelter, or rescue.
 
-## React Compiler
+### ✨ Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🚨 **Real-Time Request Mapping**: Drop an SOS request detailing emergency type, urgency, and exact location.
+- 🤝 **Peer-to-Peer Volunteering**: Browse local pending requests ranging from 'Critical Rescue' to 'Medium Supplies'.
+- ✅ **Volunteer Safety Checklist**: Built-in verification modal ensuring volunteers have required transport, safety parameters, and supplies before accepting dangerous tasks.
+- 📞 **In-App VoIP Protocol (Mockup)**: Fast, secure contact interface generating an immediate digital connection between the victim and responder.
+- 🎨 **Glassmorphic Modern UI**: Premium, high-contrast aesthetics built for high visibility during stressful, split-second decision making.
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+To run the application locally on your machine, follow these steps:
+
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
+
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/CodeBeeny/CrisisSync.git
+   cd CrisisSync
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **View the Application:**
+   Open your browser and navigate to `http://localhost:5173`.
+
+## 🛠 Tech Stack
+
+- **Frontend Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: Vanilla CSS (Custom Glassmorphism Design System)
+- **Icons**: Lucide React
+
+## 📸 Screenshots
+
+*(Add your screenshots here! Take screenshots of the Dashboard, Landing Page, and the VoIP calling interface to showcase the UI)*
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/CodeBeeny/CrisisSync/issues) if you want to contribute.
+
+---
+
+<div align="center">
+  Built with ❤️ for rapid community-driven disaster relief.
+</div>

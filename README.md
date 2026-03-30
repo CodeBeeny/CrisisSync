@@ -16,11 +16,11 @@ During a crisis, traditional emergency services are often overwhelmed. **CrisisS
 
 ### ✨ Key Features
 
-- 🚨 **Real-Time Request Mapping**: Drop an SOS request detailing emergency type, urgency, and exact location.
-- 🤝 **Peer-to-Peer Volunteering**: Browse local pending requests ranging from 'Critical Rescue' to 'Medium Supplies'.
-- ✅ **Volunteer Safety Checklist**: Built-in verification modal ensuring volunteers have required transport, safety parameters, and supplies before accepting dangerous tasks.
-- 📞 **In-App VoIP Protocol (Mockup)**: Fast, secure contact interface generating an immediate digital connection between the victim and responder.
-- 🎨 **Glassmorphic Modern UI**: Premium, high-contrast aesthetics built for high visibility during stressful, split-second decision making.
+- **Real-Time Request Mapping**: Drop an SOS request detailing emergency type, urgency, and exact location.
+- **Peer-to-Peer Volunteering**: Browse local pending requests ranging from 'Critical Rescue' to 'Medium Supplies'.
+- **Volunteer Safety Checklist**: Built-in verification modal ensuring volunteers have required transport, safety parameters, and supplies before accepting dangerous tasks.
+- **In-App VoIP Protocol (Mockup)**: Fast, secure contact interface generating an immediate digital connection between the victim and responder.
+- **Glassmorphic Modern UI**: Premium, high-contrast aesthetics built for high visibility during stressful, split-second decision making.
 
 ## 🚀 Getting Started
 
@@ -60,7 +60,7 @@ To run the application locally on your machine, follow these steps:
 ## 📸 Screenshots & Demo
 
 <div align="center">
-  <img src="./public/demo/crisis_sync_demo.webp" alt="CrisisSync Demo Walkthrough" width="800"/>
+  <img src="./public/demo/crisis_sync_demo.gif" alt="CrisisSync Demo Walkthrough" width="800"/>
 </div>
 
 ### Landing Page & Dashboard

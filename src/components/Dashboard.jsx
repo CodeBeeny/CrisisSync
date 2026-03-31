@@ -12,7 +12,7 @@ const getUrgencyColor = (urgency) => {
   return 'var(--accent-cyan)'
 }
 
-const RequestCard = ({ req, onAcceptClick, onContactClick, onDetailsClick }) => (
+const RequestCard = ({ req, onAcceptClick, onContactClick, onDetailsClick, hideActions }) => (
   <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
       <div>
@@ -46,7 +46,7 @@ const RequestCard = ({ req, onAcceptClick, onContactClick, onDetailsClick }) => 
       <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Clock size={16} /> {req.time}</span>
     </div>
 
-    {req.status === 'Pending' && (
+    {!hideActions && req.status === 'Pending' && (
       <div className="card-actions">
         <button className="btn btn-secondary" style={{ flex: 1, padding: '10px' }} onClick={() => onDetailsClick(req)}>View Details</button>
         <button className="btn btn-cyan" onClick={() => onAcceptClick(req)} style={{ flex: 1, padding: '10px' }}>
@@ -54,7 +54,7 @@ const RequestCard = ({ req, onAcceptClick, onContactClick, onDetailsClick }) => 
         </button>  
       </div>
     )}
-    {req.status === 'In Progress' && (
+    {!hideActions && req.status === 'In Progress' && (
       <div className="card-actions">
         <button className="btn btn-secondary" style={{ flex: 1, padding: '10px' }} onClick={() => onDetailsClick(req)}>View Details</button>
         <button className="btn btn-primary" onClick={() => onContactClick(req)} style={{ flex: 1, padding: '10px', background: 'var(--accent-green)', borderColor: 'var(--accent-green)', color: '#000' }}>
@@ -87,8 +87,35 @@ const Dashboard = ({ requests, setRequests }) => {
     Medium: baseRequests.filter(r => r.urgency === 'Medium').length,
   }
 
+  const myRequests = requests.filter(req => req.requester === 'You (Anonymous)')
+
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', paddingBottom: '40px', marginTop: '20px' }}>
+      
+      {myRequests.length > 0 && (
+        <div className="animate-fade-in" style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+             <h2 style={{ fontSize: '2rem', color: 'var(--accent-cyan)' }}>My Requests</h2>
+             <span style={{ background: 'rgba(0, 240, 255, 0.1)', color: 'var(--accent-cyan)', padding: '4px 12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 600 }}>Active</span>
+          </div>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>Monitor the status of your broadcasted emergencies in real-time.</p>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '24px' }}>
+            {myRequests.map((req, idx) => (
+              <div key={`my-${req.id}`} style={{ animationDelay: `${idx * 0.1}s` }} className="animate-fade-in">
+                <RequestCard 
+                  req={req} 
+                  onDetailsClick={setActiveDetailsReq} 
+                  hideActions={true} 
+                />
+              </div>
+            ))}
+          </div>
+          
+          <hr style={{ border: 'none', borderBottom: '1px solid var(--border-glass)', marginTop: '40px' }} />
+        </div>
+      )}
+
       <header className="dashboard-header">
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '8px' }}>Live Requests</h1>

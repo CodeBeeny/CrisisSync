@@ -1,16 +1,44 @@
 import { useState } from 'react'
-import { AlertCircle, User, MapPin, Clock, Package } from 'lucide-react'
+import { AlertCircle, User, MapPin, Clock, Package, Map } from 'lucide-react'
+import MapPickerModal from './MapPickerModal'
 
 const RequestForm = ({ onCancel, onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showMap, setShowMap] = useState(false)
+  const [location, setLocation] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setIsSubmitting(true)
+    
+    const urgencyVal = e.target.urgency.value
+    let urgencyDisplay = 'Medium'
+    if (urgencyVal === 'immediate') urgencyDisplay = 'Critical'
+    if (urgencyVal === '1hr') urgencyDisplay = 'High'
+    
+    const typeSelect = e.target.type
+    const typeText = typeSelect.options[typeSelect.selectedIndex].text
+    
+    // Ensure we handle multi-word types nicely like "Medical Assistance" -> "Medical"
+    let typeIconText = typeText.split(' ')[0]
+    if (typeText.includes('Food')) typeIconText = 'Food'
+    if (typeText.includes('Evacuation')) typeIconText = 'Rescue'
+
+    const newReq = {
+      id: Date.now(),
+      type: typeIconText,
+      title: typeText,
+      location: location || 'Unknown Location',
+      time: 'Just now',
+      urgency: urgencyDisplay,
+      status: 'Pending',
+      requester: 'You (Anonymous)'
+    }
+
     // Simulate network request
     setTimeout(() => {
       setIsSubmitting(false)
-      onSubmit()
+      onSubmit(newReq)
     }, 1500)
   }
 
@@ -54,7 +82,7 @@ const RequestForm = ({ onCancel, onSubmit }) => {
           {/* Problem Type */}
           <div>
             <label style={labelStyle}><AlertCircle size={16} /> Problem Type</label>
-            <select required style={inputStyle} defaultValue="">
+            <select name="type" required style={inputStyle} defaultValue="">
               <option value="" disabled>Select emergency type...</option>
               <option value="medical">Medical Assistance</option>
               <option value="food">Food & Water</option>
@@ -64,11 +92,11 @@ const RequestForm = ({ onCancel, onSubmit }) => {
             </select>
           </div>
 
-          <div style={{ display: 'flex', gap: '24px' }}>
+          <div className="form-row">
             {/* Urgency / Time */}
             <div style={{ flex: 1 }}>
               <label style={labelStyle}><Clock size={16} /> How soon?</label>
-              <select required style={inputStyle}>
+              <select name="urgency" required style={inputStyle}>
                 <option value="immediate">Immediate (Critical)</option>
                 <option value="1hr">Within 1 Hour</option>
                 <option value="12hr">Within 12 Hours</option>
@@ -79,21 +107,39 @@ const RequestForm = ({ onCancel, onSubmit }) => {
             {/* Units/Quantity */}
             <div style={{ flex: 1 }}>
               <label style={labelStyle}><Package size={16} /> Units Needed</label>
-              <input type="number" min="1" placeholder="E.g., 2 boxes of meals..." required style={inputStyle} />
+              <input name="units" type="number" min="1" placeholder="E.g., 2 boxes of meals..." required style={inputStyle} />
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '24px' }}>
+          <div className="form-row">
             {/* Location */}
             <div style={{ flex: 2 }}>
               <label style={labelStyle}><MapPin size={16} /> Location</label>
-              <input type="text" placeholder="Enter your current address or coordinates..." required style={inputStyle} />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input 
+                  type="text" 
+                  placeholder="Address or click map..." 
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  required 
+                  style={{ ...inputStyle, flex: 1 }} 
+                />
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  style={{ padding: '0 16px' }}
+                  onClick={() => setShowMap(true)}
+                  title="Choose on map"
+                >
+                  <Map size={20} />
+                </button>
+              </div>
             </div>
 
             {/* People Count */}
             <div style={{ flex: 1 }}>
               <label style={labelStyle}><User size={16} /> People Status</label>
-              <select required style={inputStyle}>
+              <select name="people" required style={inputStyle}>
                 <option value="alone">I am alone</option>
                 <option value="family">Family (2-4)</option>
                 <option value="group">Large Group (5+)</option>
@@ -103,10 +149,10 @@ const RequestForm = ({ onCancel, onSubmit }) => {
 
           <div>
             <label style={labelStyle}>Additional Details (Optional)</label>
-            <textarea rows="3" placeholder="Any specific instructions for volunteers..." style={{ ...inputStyle, resize: 'vertical' }}></textarea>
+            <textarea name="details" rows="3" placeholder="Any specific instructions for volunteers..." style={{ ...inputStyle, resize: 'vertical' }}></textarea>
           </div>
 
-          <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
+          <div className="form-actions">
             <button type="button" className="btn btn-secondary" style={{ flex: 1 }} onClick={onCancel} disabled={isSubmitting}>
               Cancel
             </button>
@@ -116,6 +162,16 @@ const RequestForm = ({ onCancel, onSubmit }) => {
           </div>
         </form>
       </div>
+
+      {showMap && (
+        <MapPickerModal 
+          onClose={() => setShowMap(false)} 
+          onConfirm={(coords) => {
+            setLocation(coords)
+            setShowMap(false)
+          }} 
+        />
+      )}
     </div>
   )
 }

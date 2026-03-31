@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Navbar from './components/Navbar'
 import LandingPage from './components/LandingPage'
 import Dashboard from './components/Dashboard'
@@ -12,20 +12,44 @@ const INITIAL_REQUESTS = [
 ]
 
 function App() {
-  const [currentView, setCurrentView] = useState('landing') // 'landing', 'dashboard', 'request'
+  const [currentView, setCurrentView] = useState(() => {
+    const hash = window.location.hash.replace('#', '')
+    return ['landing', 'dashboard', 'request'].includes(hash) ? hash : 'landing'
+  })
+  
+  const navigate = useCallback((view) => {
+    window.location.hash = view
+    setCurrentView(view)
+  }, [])
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '')
+      setCurrentView(['landing', 'dashboard', 'request'].includes(hash) ? hash : 'landing')
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
   const [requests, setRequests] = useState(INITIAL_REQUESTS)
 
   return (
     <div className="app-container">
-      <Navbar currentView={currentView} setCurrentView={setCurrentView} />
+      <Navbar currentView={currentView} setCurrentView={navigate} />
       <main className="main-content">
         {currentView === 'landing' ? (
           <LandingPage 
-            onGetStarted={() => setCurrentView('dashboard')} 
-            onNeedHelp={() => setCurrentView('request')}
+            onGetStarted={() => navigate('dashboard')} 
+            onNeedHelp={() => navigate('request')}
           />
         ) : currentView === 'request' ? (
-          <RequestForm onCancel={() => setCurrentView('landing')} onSubmit={() => setCurrentView('dashboard')} />
+          <RequestForm 
+            onCancel={() => navigate('landing')} 
+            onSubmit={(newReq) => {
+              setRequests(prev => [newReq, ...prev])
+              navigate('dashboard')
+            }} 
+          />
         ) : (
           <Dashboard requests={requests} setRequests={setRequests} />
         )}

@@ -36,7 +36,7 @@ const LandingPage = ({ onGetStarted, onNeedHelp }) => {
           response to distribute food, medical supplies, and shelter when seconds matter.
         </p>
         
-        <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
+        <div className="hero-buttons">
           <button className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '1.125rem' }} onClick={onNeedHelp}>
             I Need Help
           </button>

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { MapPin, Clock, AlertTriangle, ShieldCheck, Filter, Phone } from 'lucide-react'
+import { MapPin, Clock, AlertTriangle, ShieldCheck, Filter, Phone, Search } from 'lucide-react'
 import VolunteerChecklistModal from './VolunteerChecklistModal'
 import VoIPModal from './VoIPModal'
+import RequestDetailsModal from './RequestDetailsModal'
 
 
 
@@ -11,7 +12,7 @@ const getUrgencyColor = (urgency) => {
   return 'var(--accent-cyan)'
 }
 
-const RequestCard = ({ req, onAcceptClick, onContactClick }) => (
+const RequestCard = ({ req, onAcceptClick, onContactClick, onDetailsClick }) => (
   <div className="glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '20px' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
       <div>
@@ -46,16 +47,16 @@ const RequestCard = ({ req, onAcceptClick, onContactClick }) => (
     </div>
 
     {req.status === 'Pending' && (
-      <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
-        <button className="btn btn-secondary" style={{ flex: 1, padding: '10px' }}>View Details</button>
+      <div className="card-actions">
+        <button className="btn btn-secondary" style={{ flex: 1, padding: '10px' }} onClick={() => onDetailsClick(req)}>View Details</button>
         <button className="btn btn-cyan" onClick={() => onAcceptClick(req)} style={{ flex: 1, padding: '10px' }}>
           <ShieldCheck size={18} /> Accept Request
         </button>  
       </div>
     )}
     {req.status === 'In Progress' && (
-      <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
-        <button className="btn btn-secondary" style={{ flex: 1, padding: '10px' }}>View Details</button>
+      <div className="card-actions">
+        <button className="btn btn-secondary" style={{ flex: 1, padding: '10px' }} onClick={() => onDetailsClick(req)}>View Details</button>
         <button className="btn btn-primary" onClick={() => onContactClick(req)} style={{ flex: 1, padding: '10px', background: 'var(--accent-green)', borderColor: 'var(--accent-green)', color: '#000' }}>
           <Phone size={18} /> Contact Requester
         </button>  
@@ -66,8 +67,10 @@ const RequestCard = ({ req, onAcceptClick, onContactClick }) => (
 
 const Dashboard = ({ requests, setRequests }) => {
   const [filter, setFilter] = useState('All')
+  const [searchLocation, setSearchLocation] = useState('')
   const [activeChecklistReq, setActiveChecklistReq] = useState(null)
   const [activeVoIPReq, setActiveVoIPReq] = useState(null)
+  const [activeDetailsReq, setActiveDetailsReq] = useState(null)
 
   const handleConfirmAccept = () => {
     setRequests(prev => prev.map(r => 
@@ -76,15 +79,23 @@ const Dashboard = ({ requests, setRequests }) => {
     setActiveChecklistReq(null)
   }
 
+  const baseRequests = requests.filter(req => !searchLocation || req.location.toLowerCase().includes(searchLocation.toLowerCase()))
+  const counts = {
+    All: baseRequests.length,
+    Critical: baseRequests.filter(r => r.urgency === 'Critical').length,
+    High: baseRequests.filter(r => r.urgency === 'High').length,
+    Medium: baseRequests.filter(r => r.urgency === 'Medium').length,
+  }
+
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px', paddingBottom: '40px', marginTop: '20px' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid var(--border-glass)', paddingBottom: '24px' }}>
+      <header className="dashboard-header">
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '8px' }}>Live Requests</h1>
           <p style={{ color: 'var(--text-muted)' }}>Respond to emergencies in your local area.</p>
         </div>
         
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="filter-group">
           {['All', 'Critical', 'High', 'Medium'].map(f => (
             <button 
               key={f}
@@ -97,18 +108,45 @@ const Dashboard = ({ requests, setRequests }) => {
                 transition: 'all 0.2s ease'
               }}
             >
-              {f}
+              {f} ({counts[f]})
             </button>
           ))}
         </div>
       </header>
 
+      {/* Location Search Bar */}
+      <div style={{ position: 'relative', marginTop: '-8px' }}>
+        <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}>
+          <Search size={20} />
+        </div>
+        <input 
+          type="text" 
+          placeholder="Search requests by location (e.g., Mumbai, Chennai...)" 
+          value={searchLocation}
+          onChange={(e) => setSearchLocation(e.target.value)}
+          style={{
+            width: '100%',
+            background: 'var(--surface-glass)',
+            border: '1px solid var(--border-glass)',
+            color: 'var(--text-main)',
+            padding: '16px 24px 16px 48px',
+            borderRadius: '12px',
+            fontSize: '1.05rem',
+            outline: 'none',
+            transition: 'border-color 0.2s',
+          }}
+          onFocus={(e) => e.target.style.borderColor = 'var(--accent-cyan)'}
+          onBlur={(e) => e.target.style.borderColor = 'var(--border-glass)'}
+        />
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '24px' }}>
         {requests
           .filter(req => filter === 'All' || req.urgency === filter)
+          .filter(req => !searchLocation || req.location.toLowerCase().includes(searchLocation.toLowerCase()))
           .map((req, idx) => (
             <div key={req.id} style={{ animationDelay: `${idx * 0.1}s` }} className="animate-fade-in">
-              <RequestCard req={req} onAcceptClick={setActiveChecklistReq} onContactClick={setActiveVoIPReq} />
+              <RequestCard req={req} onAcceptClick={setActiveChecklistReq} onContactClick={setActiveVoIPReq} onDetailsClick={setActiveDetailsReq} />
             </div>
         ))}
       </div>
@@ -125,6 +163,13 @@ const Dashboard = ({ requests, setRequests }) => {
         <VoIPModal 
           personName={activeVoIPReq.requester}
           onClose={() => setActiveVoIPReq(null)} 
+        />
+      )}
+
+      {activeDetailsReq && (
+        <RequestDetailsModal 
+          req={activeDetailsReq}
+          onClose={() => setActiveDetailsReq(null)}
         />
       )}
     </div>

@@ -106,6 +106,7 @@ h1, h2, h3, h4 {
 
 .text-gradient {
   background: linear-gradient(90deg, #fff, var(--text-muted));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -144,3 +145,90 @@ h1, h2, h3, h4 {
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }
 .delay-300 { animation-delay: 0.3s; }
+
+/* Responsive Utilities */
+
+.form-row {
+  display: flex;
+  gap: 24px;
+}
+
+.hero-buttons, .form-actions, .card-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 24px;
+}
+
+.filter-group {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.2rem !important; }
+  h2 { font-size: 1.8rem !important; }
+  h3 { font-size: 1.2rem !important; }
+
+  .main-content {
+    padding-top: 80px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .glass-panel {
+    padding: 16px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hero-buttons, .form-actions, .card-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .filter-group {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .filter-group button {
+    flex: 1;
+    text-align: center;
+  }
+
+  .glass-nav {
+    padding: 12px 16px !important;
+  }
+  
+  .nav-buttons span {
+    display: none;
+  }
+}
+
+/* Form Styles */
+select option {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+}
